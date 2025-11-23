@@ -26,6 +26,10 @@ import com.google.mlkit.vision.barcode.BarcodeScanning;
 import java.io.IOException;
 import java.util.List;
 import java.net.URL;
+import android.graphics.Point;
+import com.facebook.react.bridge.WritableArray;
+import com.facebook.react.bridge.WritableMap;
+import com.facebook.react.bridge.Arguments;
 
 public class BarcodeScanningModule extends ReactContextBaseJavaModule {
 
@@ -75,6 +79,19 @@ public class BarcodeScanningModule extends ReactContextBaseJavaModule {
                                 map.putDouble("format", barcode.getFormat());
                                 map.putString("displayValue", barcode.getDisplayValue());
                                 map.putString("rawValue", barcode.getRawValue());
+
+                                Point[] points = barcode.getCornerPoints();
+                                if (points != null) {
+                                    WritableArray corners = Arguments.createArray();
+                                    for (Point p : points) {
+                                        WritableMap pointMap = Arguments.createMap();
+                                        pointMap.putInt("x", p.x);
+                                        pointMap.putInt("y", p.y);
+                                        corners.pushMap(pointMap);
+                                    }
+                                    map.putArray("cornerPoints", corners);
+                                }
+
                                 result.pushMap(map);
                             }
                             promise.resolve(result);
