@@ -18,14 +18,15 @@ export enum BarcodeFormat {
   AZTEC = 4096,
 }
 
+export interface BarcodePoint {
+    x: number;
+    y: number;
+}
+
 export interface Barcode {
+  cornerPoints?: BarcodePoint[];
   format: BarcodeFormat;
-  /**
-   * @deprecated `value` is deprecated and will be removed in a future release please use `displayValue` or `rawValue` instead
-   */
   value: string;
-  rawValue: string;
-  displayValue: string;
 }
 
 interface IBarcodeScanning {
